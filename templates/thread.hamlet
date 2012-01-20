@@ -1,0 +1,11 @@
+<a href=@{RootR}>トップへ
+
+<h1>スレッド：#{threadTitle $ snd thread}
+
+<form method=post enctype=#{enctype}>
+  ^{widget}
+  <input type=submit>
+
+<ul>
+  $forall entry <- entries
+    <li><a href=@{EntryR $ fromKey $ fst entry}>#{entryContent $ snd entry}

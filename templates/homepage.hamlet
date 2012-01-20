@@ -1,0 +1,11 @@
+<a href=@{RootR}>最新にする
+
+<h1>スレッド一覧
+
+<form action=@{RootR} method=POST enctype=#{enctype}>
+  ^{widget}
+  <input type=submit>
+
+<ul>
+  $forall thread <- threads
+    <li><a href=@{ThreadR $ fromKey $ fst thread}>#{threadTitle $ snd thread}
