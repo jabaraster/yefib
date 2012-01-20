@@ -4,7 +4,6 @@ module Model.Accessor (
   , getEntryById
   , toKey
   , fromKey
-  , fromRecordToId
 ) where
 
 import Import
@@ -16,8 +15,6 @@ getThreadById threadId = selectFirst [ThreadId ==. toKey threadId] []
 getEntryById entryId = selectFirst [EntryId ==. toKey entryId] []
 
 getEntriesByThreadId threadId = selectList [EntryThreadId ==. toKey threadId] [Desc EntryUpdated]
-
-fromRecordToId = fromKey . fst
 
 toKey :: Integer -> Key b e
 toKey value = Key { unKey = PersistInt64 $ read $ show value }

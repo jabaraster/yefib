@@ -10,8 +10,14 @@ data EntryForm = EntryForm {
   , mode :: Text
 }
 
+data EntryFormForDelete = EntryFormForDelete Text
+
 data Mode = New | Update | Delete
   deriving (Show, Ord, Eq, Read)
+
+entryFormForDelete :: Html -> MForm Jabaraster Jabaraster (FormResult EntryFormForDelete, Widget)
+entryFormForDelete = renderDivs $ EntryFormForDelete
+  <$> areq hiddenField "" (Just $ pack $ show Delete)
 
 entryForm :: Html -> MForm Jabaraster Jabaraster (FormResult EntryForm, Widget)
 entryForm = renderDivs $ EntryForm
@@ -28,10 +34,11 @@ getThreadR threadId = do
 
     Just thread -> do
       ((_, widget), enctype) <- runFormPost entryForm
+      ((_, widgetForDelete), _) <- runFormPost entryFormForDelete
       entries <- runDB $ getEntriesByThreadId $ fromKey $ fst thread
       defaultLayout $ do
         setTitle "thread"
-        $(widgetFile "thread")
+        $(widgetFile "thread2")
 
 postThreadR :: Integer -> Handler RepHtml
 postThreadR threadId = do
