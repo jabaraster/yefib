@@ -19,6 +19,7 @@ getRootR = do
   defaultLayout $ do
     setTitle "bbs homepage"
     $(widgetFile "homepage")
+    $(widgetFile "submit")
 
 
 postRootR :: Handler RepHtml
@@ -40,4 +41,4 @@ processForm ((_, widget), enctype) = do
   defaultLayout $ do
     setTitle "bbs homepage"
     $(widgetFile "homepage")
-
+    $(widgetFile "submit")

@@ -1,10 +1,13 @@
-<a href=@{RootR}>トップへ
+<a href=@{RootR}>スレッド一覧へ
 
 <h1>スレッド：#{threadTitle $ snd thread}
 
 <form method=post enctype=#{enctype}>
   ^{widget}
   <input type=submit>
+
+<form action=@{ThreadDeleteR $ fromKey $ fst thread} method=post>
+  <input class="delete" type=submit value="このスレッドを削除">
 
 <ul>
   $forall entry <- entries

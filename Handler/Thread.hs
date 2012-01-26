@@ -3,26 +3,15 @@ module Handler.Thread where
 import Import
 import Data.Time.Clock (getCurrentTime)
 import Model.Accessor
-import Data.Text
+import Widgets
 
 data EntryForm = EntryForm {
   content :: Textarea
-  , mode :: Text
 }
-
-data EntryFormForDelete = EntryFormForDelete Text
-
-data Mode = New | Update | Delete
-  deriving (Show, Ord, Eq, Read)
-
-entryFormForDelete :: Html -> MForm Jabaraster Jabaraster (FormResult EntryFormForDelete, Widget)
-entryFormForDelete = renderDivs $ EntryFormForDelete
-  <$> areq hiddenField "" (Just $ pack $ show Delete)
 
 entryForm :: Html -> MForm Jabaraster Jabaraster (FormResult EntryForm, Widget)
 entryForm = renderDivs $ EntryForm
   <$> areq textareaField "投稿" Nothing
-  <*> areq hiddenField "" (Just $ pack $ show New)
 
 getThreadR :: Integer -> Handler RepHtml
 getThreadR threadId = do
@@ -30,15 +19,15 @@ getThreadR threadId = do
   maybeThread <- runDB $ getThreadById threadId
 
   case maybeThread of
-    Nothing -> redirect RedirectTemporary RootR
+    Nothing -> redirect RedirectSeeOther RootR
 
     Just thread -> do
       ((_, widget), enctype) <- runFormPost entryForm
-      ((_, widgetForDelete), _) <- runFormPost entryFormForDelete
       entries <- runDB $ getEntriesByThreadId $ fromKey $ fst thread
       defaultLayout $ do
         setTitle "thread"
-        $(widgetFile "thread2")
+        $(widgetFile "thread")
+        submitWidget
 
 postThreadR :: Integer -> Handler RepHtml
 postThreadR threadId = do
@@ -57,7 +46,6 @@ processForm :: (Key b Thread, Thread)
                -> Handler RepHtml
 
 processForm thread ((FormSuccess entry, _), _) = do
-
   now <- liftIO getCurrentTime
   _   <- runDB $ insert Entry {
                           entryContent = content entry
@@ -72,3 +60,4 @@ processForm thread ((_, widget), enctype) = do
   defaultLayout $ do
     setTitle "thread"
     $(widgetFile "thread")
+    submitWidget

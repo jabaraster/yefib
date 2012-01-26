@@ -1,7 +1,7 @@
 <a href=@{ThreadR $ fromKey $ entryThreadId $ snd entry}>スレッドに戻る
 
 <p>#{entryContent $ snd entry}
-
+#
 <form method=post enctype=#{enctype}>
   ^{widget}
-  <input type=submit value="削除">
+  <input class="delete" type=submit value="削除">
