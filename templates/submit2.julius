@@ -1,5 +1,0 @@
-$(function() {
-  $("##{tagId}").click(function() {
-    return confirm("削除していい？")
-  });
-});

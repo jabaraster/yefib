@@ -1,5 +1,0 @@
-$(function() {
-  $("##{submitTagId context}").click(function() {
-    return confirm("削除していい？")
-  });
-});
