@@ -1,0 +1,5 @@
+$(function() {
+  $("input[type=submit].delete").click(function() {
+    return confirm("削除していい？")
+  });
+});

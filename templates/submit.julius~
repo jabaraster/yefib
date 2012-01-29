@@ -1,0 +1,6 @@
+$(function() {
+  $("input[type=submit].delete").click(function() {
+    alert(222222);
+    return false;
+  });
+});
